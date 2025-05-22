@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Kodex</string>
+    <string name="qr_code_generator">QR Kod Oluşturucu</string>
+    <string name="enter_text_to_encode">Kodlamak için metin girin</string>
+    <string name="encrypt_before_generate">Oluşturmadan önce şifrele</string>
+    <string name="text_empty_error">Metin boş olamaz</string>
+    <string name="text_saved_success">Geçmişe kaydedildi</string>
+    <string name="generate_qr_code">QR Kod Oluştur</string>
+    <string name="generate_and_save"><![CDATA[Oluştur ve Kaydet]]></string>
+    <string name="history">Geçmiş</string>
+    <string name="no_qr_codes_found">Herhangi bir QR kodu bulunamadı.</string>
+    <string name="delete_qr_code">QR Kodunu Sil?</string>
+    <string name="delete_qr_code_description">Bu QR kodunu geçmişten silmek istediğinizden emin misiniz?</string>
+    <string name="delete">Sil</string>
+    <string name="cancel">İptal</string>
+    <string name="qr_code">QR Kod</string>
+    <string name="copy">Kopyala</string>
+    <string name="share">Paylaş</string>
+    <string name="welcome_to_kodex">Kodex\'e Hoş Geldiniz</string>
+    <string name="welcome_to_kodex_description">Verilerinizi güvenli bir şekilde şifreleyin, tarayın ve saklayın.</string>
+    <string name="rescan">Yeniden Tara</string>
+    <string name="camera_permission_required">Kamera izni gerekli!</string>
+    <string name="home">Ana Sayfa</string>
+    <string name="scan">Tara</string>
+    <string name="generate">Oluştur</string>
+    <string name="copied_to_clipboard">Panoya kopyalandı</string>
+    <string name="share_qr_content">QR İçeriğini Paylaş</string>
+</resources>

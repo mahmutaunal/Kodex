@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Kodex</string>
+    <string name="qr_code_generator">QR Code Generator</string>
+    <string name="enter_text_to_encode">Enter text to encode</string>
+    <string name="encrypt_before_generate">Encrypt before generate</string>
+    <string name="text_empty_error">Text cannot be empty</string>
+    <string name="text_saved_success">Saved to history</string>
+    <string name="generate_qr_code">Generate QR Code</string>
+    <string name="generate_and_save"><![CDATA[Generate & Save]]></string>
+    <string name="history">History</string>
+    <string name="no_qr_codes_found">No QR codes found.</string>
+    <string name="delete_qr_code">Delete QR Code?</string>
+    <string name="delete_qr_code_description">Are you sure you want to delete this QR code from history?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="qr_code">QR Code</string>
+    <string name="copy">Copy</string>
+    <string name="share">Share</string>
+    <string name="welcome_to_kodex">Welcome to Kodex</string>
+    <string name="welcome_to_kodex_description">Securely encrypt, scan, and store your sensitive data with ease.</string>
+    <string name="rescan">Rescan</string>
+    <string name="camera_permission_required">Camera permission required!</string>
+    <string name="home">Home</string>
+    <string name="scan">Scan</string>
+    <string name="generate">Generate</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="share_qr_content">Share QR Content</string>
+</resources>
