@@ -25,4 +25,5 @@
     <string name="generate">Oluştur</string>
     <string name="copied_to_clipboard">Panoya kopyalandı</string>
     <string name="share_qr_content">QR İçeriğini Paylaş</string>
+    <string name="share_failed">Paylaşım Başarısız</string>
 </resources>

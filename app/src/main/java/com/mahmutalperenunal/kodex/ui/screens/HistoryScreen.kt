@@ -64,10 +64,14 @@ fun HistoryScreen(navController: NavHostController) {
         } else {
             LazyColumn {
                 items(qrList) { qrItem ->
+                    val isDarkTheme = isSystemInDarkTheme()
+                    val qrColor = if (isDarkTheme) android.graphics.Color.WHITE else android.graphics.Color.BLACK
+                    val qrBitmap = QrUtils.generateQrCode(qrItem.content, qrColor)
+
                     HistoryItem(
                         qrItem = qrItem,
                         onCopy = { QrUtils.copyToClipboard(context, qrItem.content) },
-                        onShare = { QrUtils.shareContent(context, qrItem.content) },
+                        onShare = { QrUtils.shareQrImageWithText(context, qrItem.content, qrBitmap) },
                         onDelete = { viewModel.delete(qrItem) }
                     )
                     Spacer(modifier = Modifier.height(12.dp))
