@@ -67,3 +67,9 @@
 # FileProvider (QR paylaşımı için önemli)
 ########################################
 -keep public class * extends android.content.ContentProvider
+
+########################################
+# Firebase Crashlytics
+########################################
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
