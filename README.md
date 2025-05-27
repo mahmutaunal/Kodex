@@ -13,6 +13,8 @@ Kodex is a lightweight and modern QR code app built with Jetpack Compose. You ca
 - ✅ **Automatic History Log (Room Database)**
 - ✅ **Modern Jetpack Compose UI**
 - ✅ **Dark Theme Support**
+- ✅ **Crash reporting** with [Firebase Crashlytics](https://firebase.google.com/docs/crashlytics)
+- ✅ **User behavior analytics** with [Firebase Analytics](https://firebase.google.com/docs/analytics)
 
 ---
 
@@ -38,6 +40,18 @@ Kodex is a lightweight and modern QR code app built with Jetpack Compose. You ca
 | ![](assets/home_screen.png) | ![](assets/scanner_screen.png) | ![](assets/generator_screen.png) |
 | History | Dark Home |
 | ![](assets/history_screen.png) | ![](assets/dark_home_screen.png) |
+
+---
+
+### 🔧 Firebase Setup
+
+> Firebase is used for crash reporting and analytics (no sensitive user data is collected).
+
+To enable Firebase features:
+1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
+2. Register your app using your package name.
+3. Download `google-services.json` and place it in the `app/` directory.
+4. Sync and run the project.
 
 ---
 
