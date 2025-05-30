@@ -16,10 +16,12 @@ android {
         applicationId = "com.mahmutalperenunal.kodex"
         minSdk = 28
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders["ADMOB_APP_ID"] = project.properties["ADMOB_APP_ID"] ?: ""
     }
 
     buildTypes {
@@ -83,6 +85,9 @@ dependencies {
 
     // JSOUP
     implementation(libs.jsoup)
+
+    // AdMob
+    implementation(libs.play.services.ads)
 
     // Navigation
     implementation(libs.navigation.fragment)

@@ -1,5 +1,7 @@
 package com.mahmutalperenunal.kodex
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -28,46 +30,63 @@ fun KodexApp() {
         BottomNavItem("history", stringResource(R.string.history), BottomNavIcon.Drawable(R.drawable.history))
     )
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar {
-                val currentDestination = navController.currentBackStackEntryAsState().value?.destination?.route
-                bottomNavItems.forEach { item ->
-                    NavigationBarItem(
-                        icon = {
-                            when (val icon = item.icon) {
-                                is BottomNavIcon.Vector -> Icon(imageVector = icon.icon, contentDescription = item.label)
-                                is BottomNavIcon.Drawable -> Icon(
-                                    painter = painterResource(id = icon.resId),
-                                    contentDescription = item.label
-                                )
-                            }
-                        },
-                        label = { Text(item.label) },
-                        selected = currentDestination == item.route,
-                        onClick = {
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scaffold(
+            bottomBar = {
+                NavigationBar {
+                    bottomNavItems.forEach { item ->
+                        NavigationBarItem(
+                            icon = {
+                                when (val icon = item.icon) {
+                                    is BottomNavIcon.Vector -> Icon(imageVector = icon.icon, contentDescription = item.label)
+                                    is BottomNavIcon.Drawable -> Icon(
+                                        painter = painterResource(id = icon.resId),
+                                        contentDescription = item.label
+                                    )
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                            },
+                            label = { Text(item.label) },
+                            selected = currentRoute == item.route,
+                            onClick = {
+                                navController.navigate(item.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
-        }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = "home",
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable("home") { HomeScreen(navController) }
-            composable("scanner") { ScannerScreen(navController) }
-            composable("generator") { GeneratorScreen(navController) }
-            composable("history") { HistoryScreen(navController) }
+        ) { innerPadding ->
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+            ) {
+                NavHost(
+                    navController = navController,
+                    startDestination = "home"
+                ) {
+                    composable("home") { HomeScreen(navController) }
+                    composable("scanner") { ScannerScreen(navController) }
+                    composable("generator") { GeneratorScreen(navController) }
+                    composable("history") { HistoryScreen(navController) }
+                }
+
+                /*if (currentRoute != "scanner") {
+                    AdMobBanner(
+                        adUnitId = "ca-app-pub-xxxxxxxxxxxxxxxx/zzzzzzzzzz",
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    )
+                }*/
+            }
         }
     }
 }

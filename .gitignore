@@ -1,23 +1,48 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+# ===================
+# Android Studio / IntelliJ
+# ===================
+.idea/
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
 .idea/gradle.xml
-*.apk
-app/release/baselineProfiles/0/app-release.dm
-app/release/output-metadata.json
-app/release/baselineProfiles/1/app-release.dm
 .idea/vcs.xml
+*.iml
+
+# ===================
+# Gradle
+# ===================
+.gradle/
+build/
+app/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# ===================
+# Local Configuration
+# ===================
+local.properties
+.DS_Store
+
+# ===================
+# Firebase & Google Services
+# ===================
 app/google-services.json
+firebase-debug.log
+
+# ===================
+# Build Artifacts
+# ===================
+*.apk
 *.aab
+app/release/output-metadata.json
+app/release/baselineProfiles/
+
+# ===================
+# Kotlin Annotation Processing (KAPT)
+# ===================
+.kapt/

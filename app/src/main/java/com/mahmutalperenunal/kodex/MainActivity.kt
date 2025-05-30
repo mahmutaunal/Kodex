@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                 val latestVersion = VersionChecker.getLatestVersion()
                 val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
                 if (latestVersion != null && latestVersion != currentVersion) {
-                    showUpdateDialog()
+                    showUpdateDialog(applicationContext)
                 }
             }
         }
@@ -64,29 +64,25 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun showUpdateDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Yeni Güncelleme Mevcut")
-            .setMessage("Uygulamanın yeni bir sürümü mevcut. Güncellemek ister misiniz?")
-            .setPositiveButton("Güncelle") { _, _ ->
-                val url = "https://play.google.com/store/apps/details?id=$packageName"
+    private fun showUpdateDialog(context: Context) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(context.getString(R.string.update_dialog_title))
+            .setMessage(context.getString(R.string.update_dialog_message))
+            .setPositiveButton(context.getString(R.string.update_dialog_positive)) { _, _ ->
+                val url = "https://play.google.com/store/apps/details?id=${context.packageName}"
                 val intent = Intent(Intent.ACTION_VIEW, url.toUri())
                 intent.setPackage("com.android.vending")
-                startActivity(intent)
+                context.startActivity(intent)
             }
-            .setNegativeButton("Daha Sonra", null)
+            .setNegativeButton(context.getString(R.string.update_dialog_negative), null)
             .show()
     }
 
     private fun Context.isNetworkAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network = connectivityManager.activeNetwork ?: return false
-            val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-        } else {
-            val networkInfo = connectivityManager.activeNetworkInfo
-            networkInfo != null && networkInfo.isConnected
-        }
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }
