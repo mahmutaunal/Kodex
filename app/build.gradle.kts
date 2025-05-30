@@ -81,6 +81,9 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
 
+    // JSOUP
+    implementation(libs.jsoup)
+
     // Navigation
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
