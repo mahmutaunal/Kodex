@@ -30,4 +30,6 @@
     <string name="update_dialog_message">A new version is available. Would you like to update the app?</string>
     <string name="update_dialog_positive">Update</string>
     <string name="update_dialog_negative">Later</string>
+    <string name="the_text_is_too_long">The text is too long! Please enter a shorter text.</string>
+    <string name="the_data_is_too_big">The data is too big for a QR code!</string>
 </resources>

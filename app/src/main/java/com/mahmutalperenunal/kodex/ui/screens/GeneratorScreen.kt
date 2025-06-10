@@ -40,6 +40,8 @@ fun GeneratorScreen(navController: NavHostController) {
     val isDarkTheme = isSystemInDarkTheme()
     val qrColor = if (isDarkTheme) android.graphics.Color.WHITE else android.graphics.Color.BLACK
 
+    val MAX_QR_LENGTH = 1000
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,11 +62,21 @@ fun GeneratorScreen(navController: NavHostController) {
                 value = text,
                 onValueChange = {
                     text = it
-                    qrBitmap = if (text.isNotBlank()) {
+                    if (text.isNotBlank()) {
                         val value = if (encryptEnabled) CryptoUtils.encrypt(it) else it
-                        QrUtils.generateQrCode(value, qrColor)
+                        if (value.length > MAX_QR_LENGTH) {
+                            qrBitmap = null
+                            Toast.makeText(context, context.getString(R.string.the_text_is_too_long), Toast.LENGTH_SHORT).show()
+                        } else {
+                            try {
+                                qrBitmap = QrUtils.generateQrCode(value, qrColor)
+                            } catch (e: Exception) {
+                                qrBitmap = null
+                                Toast.makeText(context, context.getString(R.string.the_data_is_too_big), Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     } else {
-                        null
+                        qrBitmap = null
                     }
                 },
                 label = { Text(stringResource(R.string.enter_text_to_encode)) },
@@ -122,12 +134,19 @@ fun GeneratorScreen(navController: NavHostController) {
                     Toast.makeText(context, context.getString(R.string.text_empty_error), Toast.LENGTH_SHORT).show()
                     return@Button
                 }
-
                 val content = if (encryptEnabled) CryptoUtils.encrypt(text) else text
-                viewModel.insert(QrEntity(content = content, type = QrType.GENERATED))
-                Toast.makeText(context, context.getString(R.string.text_empty_error), Toast.LENGTH_SHORT).show()
-                text = ""
-                qrBitmap = null
+                if (content.length > MAX_QR_LENGTH) {
+                    Toast.makeText(context, context.getString(R.string.the_text_is_too_long), Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
+                try {
+                    viewModel.insert(QrEntity(content = content, type = QrType.GENERATED))
+                    Toast.makeText(context, context.getString(R.string.text_empty_error), Toast.LENGTH_SHORT).show()
+                    text = ""
+                    qrBitmap = null
+                } catch (e: Exception) {
+                    Toast.makeText(context, context.getString(R.string.the_data_is_too_big), Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()

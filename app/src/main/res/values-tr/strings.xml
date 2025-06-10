@@ -30,4 +30,6 @@
     <string name="update_dialog_message">Yeni bir sürüm mevcut. Uygulamayı güncellemek ister misiniz?</string>
     <string name="update_dialog_positive">Güncelle</string>
     <string name="update_dialog_negative">Daha Sonra</string>
+    <string name="the_text_is_too_long">Metin çok uzun! Lütfen daha kısa bir metin girin.</string>
+    <string name="the_data_is_too_big">Veri QR kodu için çok büyük!</string>
 </resources>
