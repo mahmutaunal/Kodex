@@ -5,20 +5,21 @@ coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.9.0"
+lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
-composeBom = "2025.05.01"
+composeBom = "2025.06.00"
 navigation = "2.9.0"
-lifecycle = "2.9.0"
+lifecycle = "2.9.1"
 room = "2.7.1"
 qr = "4.3.0"
-encryption = "1.1.0-alpha07"
+encryption = "1.1.0-beta01"
 runtimeLivedata = "1.8.2"
-firebaseBom = "33.14.0"
+firebaseBom = "33.15.0"
 googleServices = "4.4.2"
-firebaseCrashlytics = "3.0.3"
+firebaseCrashlytics = "3.0.4"
 jsoup = "1.16.1"
-playServicesAds = "24.3.0"
+playServicesAds = "24.4.0"
+playAppUpdate = "2.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -67,6 +68,9 @@ jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 
 # AdMob
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
+
+# Play App Update
+play-app-update = { group = "com.google.android.play", name = "app-update", version.ref = "playAppUpdate" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

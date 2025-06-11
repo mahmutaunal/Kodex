@@ -16,8 +16,8 @@ android {
         applicationId = "com.mahmutalperenunal.kodex"
         minSdk = 28
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.1.1"
+        versionCode = 4
+        versionName = "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -88,6 +88,9 @@ dependencies {
 
     // AdMob
     implementation(libs.play.services.ads)
+
+    // Play App Update
+    implementation(libs.play.app.update)
 
     // Navigation
     implementation(libs.navigation.fragment)

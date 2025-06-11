@@ -48,10 +48,9 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             if (isNetworkAvailable()) {
-                val latestVersion = VersionChecker.getLatestVersion()
-                val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
-                if (latestVersion != null && latestVersion != currentVersion) {
-                    showUpdateDialog(applicationContext)
+                val updateInfo = VersionChecker.checkForUpdate(applicationContext)
+                if (updateInfo != null) {
+                    showUpdateDialog(updateInfo)
                 }
             }
         }
@@ -63,17 +62,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun showUpdateDialog(context: Context) {
-        MaterialAlertDialogBuilder(context)
-            .setTitle(context.getString(R.string.update_dialog_title))
-            .setMessage(context.getString(R.string.update_dialog_message))
-            .setPositiveButton(context.getString(R.string.update_dialog_positive)) { _, _ ->
-                val url = "https://play.google.com/store/apps/details?id=${context.packageName}"
-                val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-                intent.setPackage("com.android.vending")
-                context.startActivity(intent)
+    private fun showUpdateDialog(updateInfo: VersionChecker.UpdateInfo) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.update_dialog_title))
+            .setMessage(getString(R.string.update_dialog_message))
+            .setPositiveButton(getString(R.string.update_dialog_positive)) { _, _ ->
+                lifecycleScope.launch {
+                    VersionChecker.startUpdate(this@MainActivity, updateInfo)
+                }
             }
-            .setNegativeButton(context.getString(R.string.update_dialog_negative), null)
+            .setNegativeButton(getString(R.string.update_dialog_negative), null)
             .show()
     }
 
