@@ -10,9 +10,16 @@ import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mahmutalperenunal.kodex.ui.theme.KodexTheme
 import com.mahmutalperenunal.kodex.utils.VersionChecker
 import kotlinx.coroutines.launch
@@ -45,33 +52,64 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        lifecycleScope.launch {
-            if (isNetworkAvailable()) {
-                val updateInfo = VersionChecker.checkForUpdate(applicationContext)
-                if (updateInfo != null) {
-                    showUpdateDialog(updateInfo)
-                }
-            }
-        }
-
         setContent {
             KodexTheme {
+                val showUpdateDialog = remember { mutableStateOf(false) }
+                val updateInfo = remember { mutableStateOf<VersionChecker.UpdateInfo?>(null) }
+
+                LaunchedEffect(Unit) {
+                    if (isNetworkAvailable()) {
+                        val result = VersionChecker.checkForUpdate(applicationContext)
+                        if (result != null) {
+                            updateInfo.value = result
+                            showUpdateDialog.value = true
+                        }
+                    }
+                }
+
                 KodexApp()
+
+                if (showUpdateDialog.value && updateInfo.value != null) {
+                    UpdateDialog(
+                        onConfirm = {
+                            showUpdateDialog.value = false
+                            lifecycleScope.launch {
+                                VersionChecker.startUpdate(this@MainActivity, updateInfo.value!!)
+                            }
+                        },
+                        onDismiss = {
+                            showUpdateDialog.value = false
+                        }
+                    )
+                }
             }
         }
     }
 
-    private fun showUpdateDialog(updateInfo: VersionChecker.UpdateInfo) {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.update_dialog_title))
-            .setMessage(getString(R.string.update_dialog_message))
-            .setPositiveButton(getString(R.string.update_dialog_positive)) { _, _ ->
-                lifecycleScope.launch {
-                    VersionChecker.startUpdate(this@MainActivity, updateInfo)
+    @Composable
+    fun UpdateDialog(
+        onConfirm: () -> Unit,
+        onDismiss: () -> Unit
+    ) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            confirmButton = {
+                TextButton(onClick = onConfirm) {
+                    Text(text = stringResource(id = R.string.update_dialog_positive))
                 }
+            },
+            dismissButton = {
+                TextButton(onClick = onDismiss) {
+                    Text(text = stringResource(id = R.string.update_dialog_negative))
+                }
+            },
+            title = {
+                Text(text = stringResource(id = R.string.update_dialog_title))
+            },
+            text = {
+                Text(text = stringResource(id = R.string.update_dialog_message))
             }
-            .setNegativeButton(getString(R.string.update_dialog_negative), null)
-            .show()
+        )
     }
 
     private fun Context.isNetworkAvailable(): Boolean {
