@@ -46,3 +46,4 @@ app/release/baselineProfiles/
 # Kotlin Annotation Processing (KAPT)
 # ===================
 .kapt/
+*.log

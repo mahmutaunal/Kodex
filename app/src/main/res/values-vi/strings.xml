@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Kodex</string>
+    <string name="qr_code_generator">Trình tạo mã QR</string>
+    <string name="enter_text_to_encode">Nhập văn bản để mã hóa</string>
+    <string name="encrypt_before_generate">Mã hóa trước khi tạo</string>
+    <string name="text_empty_error">Văn bản không được để trống</string>
+    <string name="text_saved_success">Đã lưu vào lịch sử</string>
+    <string name="generate_qr_code">Tạo mã QR</string>
+    <string name="generate_and_save">Tạo &amp; Lưu</string>
+    <string name="history">Lịch sử</string>
+    <string name="no_qr_codes_found">Không tìm thấy mã QR nào.</string>
+    <string name="delete_qr_code">Xóa mã QR?</string>
+    <string name="delete_qr_code_description">Bạn có chắc muốn xóa mã QR này khỏi lịch sử không?</string>
+    <string name="delete">Xóa</string>
+    <string name="cancel">Hủy</string>
+    <string name="qr_code">Mã QR</string>
+    <string name="copy">Sao chép</string>
+    <string name="share">Chia sẻ</string>
+    <string name="welcome_to_kodex">Chào mừng đến với Kodex</string>
+    <string name="welcome_to_kodex_description">Mã hóa, quét và lưu trữ dữ liệu nhạy cảm một cách an toàn.</string>
+    <string name="rescan">Quét lại</string>
+    <string name="camera_permission_required">Yêu cầu quyền truy cập máy ảnh!</string>
+    <string name="home">Trang chủ</string>
+    <string name="scan">Quét</string>
+    <string name="generate">Tạo</string>
+    <string name="copied_to_clipboard">Đã sao chép vào bảng tạm</string>
+    <string name="share_qr_content">Chia sẻ nội dung mã QR</string>
+    <string name="share_failed">Chia sẻ thất bại</string>
+    <string name="update_dialog_title">Có bản cập nhật mới</string>
+    <string name="update_dialog_message">Phiên bản mới đã sẵn sàng. Bạn có muốn cập nhật không?</string>
+    <string name="update_dialog_positive">Cập nhật</string>
+    <string name="update_dialog_negative">Để sau</string>
+    <string name="the_text_is_too_long">Văn bản quá dài! Vui lòng nhập văn bản ngắn hơn.</string>
+    <string name="the_data_is_too_big">Dữ liệu quá lớn để tạo mã QR!</string>
+</resources>

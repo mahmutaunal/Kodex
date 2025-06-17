@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Kodex</string>
+    <string name="qr_code_generator">Generador de códigos QR</string>
+    <string name="enter_text_to_encode">Introduce el texto para codificar</string>
+    <string name="encrypt_before_generate">Encriptar antes de generar</string>
+    <string name="text_empty_error">¡El texto no puede estar vacío!</string>
+    <string name="text_saved_success">Guardado en el historial</string>
+    <string name="generate_qr_code">Generar código QR</string>
+    <string name="generate_and_save">Generar y Guardar</string>
+    <string name="history">Historial</string>
+    <string name="no_qr_codes_found">No se encontraron códigos QR.</string>
+    <string name="delete_qr_code">¿Eliminar código QR?</string>
+    <string name="delete_qr_code_description">¿Estás seguro de que deseas eliminar este código QR del historial?</string>
+    <string name="delete">Eliminar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="qr_code">Código QR</string>
+    <string name="copy">Copiar</string>
+    <string name="share">Compartir</string>
+    <string name="welcome_to_kodex">Bienvenido a Kodex</string>
+    <string name="welcome_to_kodex_description">Encripta, escanea y guarda tus datos sensibles de forma segura y sencilla.</string>
+    <string name="rescan">Volver a escanear</string>
+    <string name="camera_permission_required">¡Permiso de cámara requerido!</string>
+    <string name="home">Inicio</string>
+    <string name="scan">Escanear</string>
+    <string name="generate">Generar</string>
+    <string name="copied_to_clipboard">Copiado al portapapeles</string>
+    <string name="share_qr_content">Compartir contenido del QR</string>
+    <string name="share_failed">Error al compartir</string>
+    <string name="update_dialog_title">Nueva actualización disponible</string>
+    <string name="update_dialog_message">Hay una nueva versión disponible. ¿Deseas actualizar la aplicación?</string>
+    <string name="update_dialog_positive">Actualizar</string>
+    <string name="update_dialog_negative">Más tarde</string>
+    <string name="the_text_is_too_long">¡El texto es demasiado largo! Por favor, ingresa un texto más corto.</string>
+    <string name="the_data_is_too_big">¡Los datos son demasiado grandes para un código QR!</string>
+</resources>

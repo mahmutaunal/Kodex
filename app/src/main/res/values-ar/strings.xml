@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Kodex</string>
+    <string name="qr_code_generator">مولد رمز الاستجابة السريعة</string>
+    <string name="enter_text_to_encode">أدخل النص للترميز</string>
+    <string name="encrypt_before_generate">تشفير قبل الإنشاء</string>
+    <string name="text_empty_error">لا يمكن أن يكون النص فارغًا</string>
+    <string name="text_saved_success">تم الحفظ في السجل</string>
+    <string name="generate_qr_code">إنشاء رمز QR</string>
+    <string name="generate_and_save">إنشاء وحفظ</string>
+    <string name="history">السجل</string>
+    <string name="no_qr_codes_found">لم يتم العثور على رموز QR.</string>
+    <string name="delete_qr_code">حذف رمز QR؟</string>
+    <string name="delete_qr_code_description">هل أنت متأكد أنك تريد حذف رمز QR هذا من السجل؟</string>
+    <string name="delete">حذف</string>
+    <string name="cancel">إلغاء</string>
+    <string name="qr_code">رمز QR</string>
+    <string name="copy">نسخ</string>
+    <string name="share">مشاركة</string>
+    <string name="welcome_to_kodex">مرحبًا بك في Kodex</string>
+    <string name="welcome_to_kodex_description">قم بتشفير بياناتك الحساسة وفحصها وتخزينها بأمان وسهولة.</string>
+    <string name="rescan">إعادة المسح</string>
+    <string name="camera_permission_required">يتطلب إذن الوصول إلى الكاميرا!</string>
+    <string name="home">الرئيسية</string>
+    <string name="scan">مسح</string>
+    <string name="generate">إنشاء</string>
+    <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
+    <string name="share_qr_content">مشاركة محتوى رمز QR</string>
+    <string name="share_failed">فشل في المشاركة</string>
+    <string name="update_dialog_title">تحديث جديد متوفر</string>
+    <string name="update_dialog_message">يوجد إصدار جديد. هل ترغب في تحديث التطبيق؟</string>
+    <string name="update_dialog_positive">تحديث</string>
+    <string name="update_dialog_negative">لاحقًا</string>
+    <string name="the_text_is_too_long">النص طويل جدًا! الرجاء إدخال نص أقصر.</string>
+    <string name="the_data_is_too_big">البيانات كبيرة جدًا لإنشاء رمز QR!</string>
+</resources>

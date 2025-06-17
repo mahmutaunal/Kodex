@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Kodex</string>
+    <string name="qr_code_generator">Générateur de QR Code</string>
+    <string name="enter_text_to_encode">Entrez le texte à encoder</string>
+    <string name="encrypt_before_generate">Chiffrer avant de générer</string>
+    <string name="text_empty_error">Le texte ne peut pas être vide</string>
+    <string name="text_saved_success">Enregistré dans l’historique</string>
+    <string name="generate_qr_code">Générer un QR Code</string>
+    <string name="generate_and_save">Générer &amp; Enregistrer</string>
+    <string name="history">Historique</string>
+    <string name="no_qr_codes_found">Aucun QR Code trouvé.</string>
+    <string name="delete_qr_code">Supprimer le QR Code ?</string>
+    <string name="delete_qr_code_description">Voulez-vous vraiment supprimer ce QR Code de l’historique ?</string>
+    <string name="delete">Supprimer</string>
+    <string name="cancel">Annuler</string>
+    <string name="qr_code">QR Code</string>
+    <string name="copy">Copier</string>
+    <string name="share">Partager</string>
+    <string name="welcome_to_kodex">Bienvenue dans Kodex</string>
+    <string name="welcome_to_kodex_description">Chiffrez, scannez et stockez vos données sensibles facilement et en toute sécurité.</string>
+    <string name="rescan">Rescanner</string>
+    <string name="camera_permission_required">Permission de la caméra requise !</string>
+    <string name="home">Accueil</string>
+    <string name="scan">Scanner</string>
+    <string name="generate">Générer</string>
+    <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
+    <string name="share_qr_content">Partager le contenu du QR</string>
+    <string name="share_failed">Échec du partage</string>
+    <string name="update_dialog_title">Nouvelle mise à jour disponible</string>
+    <string name="update_dialog_message">Une nouvelle version est disponible. Voulez-vous mettre à jour l\'application ?</string>
+    <string name="update_dialog_positive">Mettre à jour</string>
+    <string name="update_dialog_negative">Plus tard</string>
+    <string name="the_text_is_too_long">Le texte est trop long ! Veuillez entrer un texte plus court.</string>
+    <string name="the_data_is_too_big">Les données sont trop volumineuses pour un QR Code !</string>
+</resources>
