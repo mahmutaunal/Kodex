@@ -32,4 +32,25 @@
     <string name="update_dialog_negative">لاحقًا</string>
     <string name="the_text_is_too_long">النص طويل جدًا! الرجاء إدخال نص أقصر.</string>
     <string name="the_data_is_too_big">البيانات كبيرة جدًا لإنشاء رمز QR!</string>
+    <string name="close">إغلاق</string>
+    <string name="scan_result">نتيجة المسح</string>
+    <string name="open_web_site">افتح الموقع الإلكتروني</string>
+    <string name="send_email">أرسل بريدًا إلكترونيًا</string>
+    <string name="phone_call">اتصال</string>
+    <string name="send_sms">أرسل رسالة نصية</string>
+    <string name="open_in_maps">افتح في الخرائط</string>
+    <string name="see_wifi">رمز Wi-Fi (عرض SSID)</string>
+    <string name="see_person">عرض معلومات الشخص</string>
+    <string name="detected_person">تم اكتشاف محتوى vCard.</string>
+    <string name="unknown">غير معروف</string>
+    <string name="show_less">عرض أقل</string>
+    <string name="show_more">عرض المزيد</string>
+    <string name="wifi_ssid">SSID</string>
+    <string name="encryption_type">نوع التشفير</string>
+    <string name="password">كلمة المرور</string>
+    <string name="content">المحتوى</string>
+    <string name="line_number">السطر رقم %1$d</string>
+    <string name="no_qr_found">لم يتم العثور على رمز QR أو باركود</string>
+    <string name="select_from_gallery">اختر من المعرض</string>
+    <string name="permission_denied">تم رفض إذن المعرض</string>
 </resources>

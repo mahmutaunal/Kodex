@@ -32,4 +32,25 @@
     <string name="update_dialog_negative">Later</string>
     <string name="the_text_is_too_long">The text is too long! Please enter a shorter text.</string>
     <string name="the_data_is_too_big">The data is too big for a QR code!</string>
+    <string name="close">Close</string>
+    <string name="scan_result">Scan Result</string>
+    <string name="open_web_site">Open Web Site</string>
+    <string name="send_email">Send Email</string>
+    <string name="phone_call">Call</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="open_in_maps">Open in Maps</string>
+    <string name="see_wifi">Wi-Fi QR (View SSID)</string>
+    <string name="see_person">Show Contact Information</string>
+    <string name="detected_person">vCard content detected.</string>
+    <string name="unknown">Unknown</string>
+    <string name="show_less">Show Less</string>
+    <string name="show_more">Show More</string>
+    <string name="wifi_ssid">SSID</string>
+    <string name="encryption_type">Encryption Type</string>
+    <string name="password">Password</string>
+    <string name="content">Content</string>
+    <string name="line_number">Line Number %1$d</string>
+    <string name="no_qr_found">No QR or Barcode found</string>
+    <string name="select_from_gallery">Select From Gallery</string>
+    <string name="permission_denied">Gallery permission denied</string>
 </resources>

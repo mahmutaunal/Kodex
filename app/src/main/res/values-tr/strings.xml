@@ -32,4 +32,25 @@
     <string name="update_dialog_negative">Daha Sonra</string>
     <string name="the_text_is_too_long">Metin çok uzun! Lütfen daha kısa bir metin girin.</string>
     <string name="the_data_is_too_big">Veri QR kodu için çok büyük!</string>
+    <string name="close">Kapat</string>
+    <string name="scan_result">Tarama Sonucu</string>
+    <string name="open_web_site">Web Sitesini Aç</string>
+    <string name="send_email">E-posta Gönder</string>
+    <string name="phone_call">Ara</string>
+    <string name="send_sms">SMS Gönder</string>
+    <string name="open_in_maps">Haritalarda Aç</string>
+    <string name="see_wifi">Wi-Fi QR (SSID Görüntüle)</string>
+    <string name="see_person">Kişi Bilgisini Göster</string>
+    <string name="detected_person">vCard içeriği algılandı.</string>
+    <string name="unknown">Bilinmeyen</string>
+    <string name="show_less">Daha Az Göster</string>
+    <string name="show_more">Daha Fazla Göster</string>
+    <string name="wifi_ssid">SSID</string>
+    <string name="encryption_type">Şifreleme Türü</string>
+    <string name="password">Şifre</string>
+    <string name="content">İçerik</string>
+    <string name="line_number">%1$d. Satır</string>
+    <string name="no_qr_found">QR veya Barkod bulunamadı</string>
+    <string name="select_from_gallery">Galeriden Seç</string>
+    <string name="permission_denied">Galeri izni reddedildi</string>
 </resources>

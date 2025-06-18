@@ -32,4 +32,25 @@
     <string name="update_dialog_negative">Để sau</string>
     <string name="the_text_is_too_long">Văn bản quá dài! Vui lòng nhập văn bản ngắn hơn.</string>
     <string name="the_data_is_too_big">Dữ liệu quá lớn để tạo mã QR!</string>
+    <string name="close">Đóng</string>
+    <string name="scan_result">Kết quả quét</string>
+    <string name="open_web_site">Mở trang web</string>
+    <string name="send_email">Gửi email</string>
+    <string name="phone_call">Gọi điện</string>
+    <string name="send_sms">Gửi SMS</string>
+    <string name="open_in_maps">Mở bằng Bản đồ</string>
+    <string name="see_wifi">Mã QR Wi-Fi (Xem SSID)</string>
+    <string name="see_person">Hiển thị thông tin liên hệ</string>
+    <string name="detected_person">Đã phát hiện nội dung vCard.</string>
+    <string name="unknown">Không xác định</string>
+    <string name="show_less">Hiển thị ít hơn</string>
+    <string name="show_more">Hiển thị thêm</string>
+    <string name="wifi_ssid">SSID</string>
+    <string name="encryption_type">Loại mã hóa</string>
+    <string name="password">Mật khẩu</string>
+    <string name="content">Nội dung</string>
+    <string name="line_number">Dòng số %1$d</string>
+    <string name="no_qr_found">Không tìm thấy mã QR hoặc mã vạch</string>
+    <string name="select_from_gallery">Chọn từ thư viện</string>
+    <string name="permission_denied">Quyền truy cập thư viện bị từ chối</string>
 </resources>
