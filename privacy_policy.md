@@ -23,6 +23,7 @@ Kodex does **not collect, store, or transmit** any personal data. All QR code ge
 Kodex may request access to:
 - **Camera**: Only used for scanning QR codes.
 - **Storage (optional)**: For saving generated QR codes to your gallery.
+- **Media Access (optional)**: To select an image from your gallery and scan a QR or barcode from it. The image is processed locally and never stored or transmitted.
 
 No other permissions are requested or required.
 
@@ -50,6 +51,7 @@ Kodex uygulaması **hiçbir kişisel veriyi toplamaz, saklamaz ya da paylaşmaz*
 ### 📸 İzinler
 - **Kamera**: Yalnızca QR kod taramak için kullanılır.
 - **Depolama (isteğe bağlı)**: Oluşturulan QR kodlarını galeriye kaydetmek için.
+- **Medya Erişimi (isteğe bağlı)**: Galerinizden bir görsel seçip içindeki QR veya barkodu taramak için kullanılır. Görsel sadece cihaz içinde işlenir, saklanmaz veya paylaşılmaz.
 
 ### 📊 Firebase
 - Firebase Crashlytics: Hataları takip eder ve düzeltmeye yardımcı olur.
