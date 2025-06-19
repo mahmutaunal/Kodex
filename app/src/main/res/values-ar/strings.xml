@@ -85,4 +85,9 @@
     <string name="qr_type_vcard">بطاقة VCard</string>
     <string name="qr_type_event">حدث</string>
     <string name="qr_type_encrypted">مشفّر</string>
+    <string name="qr_content_label">📎 محتوى QR:</string>
+    <string name="copy_failed">فشل النسخ</string>
+    <string name="please_fill_required_fields">يرجى ملء الحقول المطلوبة</string>
+    <string name="add_to_calendar">أضف إلى التقويم</string>
+    <string name="unable_to_parse_event">تعذر تحليل محتوى الحدث</string>
 </resources>

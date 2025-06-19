@@ -2,6 +2,7 @@ package com.mahmutalperenunal.kodex.ui.screens
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.mahmutalperenunal.kodex.R
+import com.mahmutalperenunal.kodex.data.QrContentType
 import com.mahmutalperenunal.kodex.utils.QrUtils
 import com.mahmutalperenunal.kodex.viewmodel.HistoryViewModel
 import com.mahmutalperenunal.kodex.utils.viewModelFactory
@@ -64,14 +66,20 @@ fun HistoryScreen(navController: NavHostController) {
         } else {
             LazyColumn {
                 items(qrList) { qrItem ->
-                    val isDarkTheme = isSystemInDarkTheme()
-                    val qrColor = if (isDarkTheme) android.graphics.Color.WHITE else android.graphics.Color.BLACK
-                    val qrBitmap = QrUtils.generateQrCode(qrItem.content, qrColor)
+                    val shareText = when (qrItem.contentType) {
+                        QrContentType.ENCRYPTED,
+                        QrContentType.WIFI,
+                        QrContentType.VCARD,
+                        QrContentType.EVENT -> null
+                        else -> "${context.getString(R.string.qr_content_label)}\n${qrItem.content}"
+                    }
+
+                    val qrBitmap = QrUtils.generateQrCodeForSharing(qrItem.content, Color.BLACK)
 
                     HistoryItem(
                         qrItem = qrItem,
-                        onCopy = { QrUtils.copyToClipboard(context, qrItem.content) },
-                        onShare = { QrUtils.shareQrImageWithText(context, qrItem.content, qrBitmap) },
+                        onCopy = { QrUtils.copyQrImageAndTextToClipboard(context, shareText ?: "", qrBitmap) },
+                        onShare = { QrUtils.shareQrImageWithText(context, shareText ?: "", qrBitmap) },
                         onDelete = { viewModel.delete(qrItem) }
                     )
                     Spacer(modifier = Modifier.height(12.dp))
@@ -114,7 +122,7 @@ fun HistoryItem(
         )
     }
 
-    val qrBitmap: Bitmap = QrUtils.generateQrCode(qrItem.content, qrColor)
+    val qrBitmap: Bitmap = QrUtils.generateQrCodeForPreview(qrItem.content, qrColor)
 
     Card(
         modifier = Modifier.fillMaxWidth(),

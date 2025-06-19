@@ -16,17 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.mahmutalperenunal.kodex.R
-import kotlinx.coroutines.launch
 import com.mahmutalperenunal.kodex.utils.*
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 @Composable
 fun FormattedMultilineContent(content: String) {
@@ -161,6 +161,29 @@ fun ActionButtonsForContent(content: String, onDismiss: () -> Unit) {
             }
         }
 
+        ContentType.EVENT -> {
+            ActionButton(context.getString(R.string.add_to_calendar), painterResource(R.drawable.ic_event)) {
+                try {
+                    val lines = content.lines().associate {
+                        val parts = it.split(":", limit = 2)
+                        parts[0].trim() to parts.getOrNull(1)?.trim().orEmpty()
+                    }
+
+                    val intent = Intent(Intent.ACTION_INSERT).apply {
+                        type = "vnd.android.cursor.item/event"
+                        putExtra(Intent.EXTRA_TITLE, lines["SUMMARY"])
+                        putExtra("beginTime", parseEventTime(lines["DTSTART"]))
+                        putExtra("endTime", parseEventTime(lines["DTEND"]))
+                        putExtra("eventLocation", lines["LOCATION"])
+                    }
+
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(context, context.getString(R.string.unable_to_parse_event), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         ContentType.PLAIN -> {
             Button(
                 onClick = onDismiss,
@@ -194,4 +217,18 @@ fun ActionButton(text: String, icon: ImageVector, onClick: () -> Unit) {
 @Composable
 fun painterResourceFrom(imageVector: ImageVector): Painter {
     return rememberVectorPainter(imageVector)
+}
+
+fun parseEventTime(value: String?): Long {
+    if (value == null) return System.currentTimeMillis()
+    return try {
+        val formatter = when {
+            value.length > 8 -> SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault())
+            else -> SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+        }
+        formatter.timeZone = TimeZone.getDefault()
+        formatter.parse(value)?.time ?: System.currentTimeMillis()
+    } catch (e: Exception) {
+        System.currentTimeMillis()
+    }
 }

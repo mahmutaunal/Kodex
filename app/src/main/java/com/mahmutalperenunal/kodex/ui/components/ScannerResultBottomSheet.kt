@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mahmutalperenunal.kodex.R
+import com.mahmutalperenunal.kodex.ui.screens.formatQrContent
 import com.mahmutalperenunal.kodex.utils.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,10 +91,16 @@ fun ScannerResultBottomSheet(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TextButton(onClick = {
-                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText("qr_result", content)
-                    clipboard.setPrimaryClip(clip)
-                    Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+                    val shareText = when (detectContentType(content)) {
+                        ContentType.WIFI,
+                        ContentType.VCARD,
+                        ContentType.EVENT -> null
+                        else -> "${context.getString(R.string.qr_content_label)}\n$content"
+                    }
+
+                    val shareBitmap = QrUtils.generateQrCodeForSharing(content, Color.BLACK)
+
+                    QrUtils.copyQrImageAndTextToClipboard(context, shareText ?: "", shareBitmap)
                 }) {
                     Icon(painterResource(R.drawable.content_copy), contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))
@@ -100,12 +108,16 @@ fun ScannerResultBottomSheet(
                 }
 
                 TextButton(onClick = {
-                    val shareIntent = Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, content)
-                        type = "text/plain"
+                    val shareText = when (detectContentType(content)) {
+                        ContentType.WIFI,
+                        ContentType.VCARD,
+                        ContentType.EVENT -> null
+                        else -> "${context.getString(R.string.qr_content_label)}\n$content"
                     }
-                    context.startActivity(Intent.createChooser(shareIntent, null))
+
+                    val shareBitmap = QrUtils.generateQrCodeForSharing(content, Color.BLACK)
+
+                    QrUtils.shareQrImageWithText(context, shareText ?: "", shareBitmap)
                 }) {
                     Icon(Icons.Default.Share, contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))

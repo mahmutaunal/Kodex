@@ -3,6 +3,7 @@ package com.mahmutalperenunal.kodex.ui.screens
 import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -42,7 +43,7 @@ fun GeneratorScreen(navController: NavHostController) {
     )
 
     val isDarkTheme = isSystemInDarkTheme()
-    val qrColor = if (isDarkTheme) android.graphics.Color.WHITE else android.graphics.Color.BLACK
+    val qrColor = if (isDarkTheme) Color.WHITE else Color.BLACK
 
     val MAX_QR_LENGTH = 1000
 
@@ -51,11 +52,22 @@ fun GeneratorScreen(navController: NavHostController) {
     var qrBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var encryptEnabled by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
-
-    val scrollState = rememberScrollState()
+    val errorFields = remember { mutableStateOf(setOf<String>()) }
 
     fun updateBitmap() {
+        if (!isInputValid(selectedContentType, inputFields)) {
+            qrBitmap = null
+            return
+        }
         qrBitmap = tryGenerateQr(selectedContentType, inputFields, encryptEnabled, qrColor, context)
+    }
+
+    fun onFieldChange(field: String, value: String) {
+        inputFields[field] = value
+        if (value.isNotBlank()) {
+            errorFields.value -= field
+        }
+        updateBitmap()
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -129,16 +141,16 @@ fun GeneratorScreen(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     when (selectedContentType) {
-                        QrContentType.TEXT -> TextInputFields(inputFields, ::updateBitmap)
-                        QrContentType.URL -> UrlInputFields(inputFields, ::updateBitmap)
-                        QrContentType.ENCRYPTED -> EncryptedInputFields(inputFields, ::updateBitmap)
-                        QrContentType.EMAIL -> EmailInputFields(inputFields, ::updateBitmap)
-                        QrContentType.WIFI -> WifiInputFields(inputFields, ::updateBitmap)
-                        QrContentType.GEO -> GeoInputFields(inputFields, ::updateBitmap)
-                        QrContentType.PHONE -> PhoneInputFields(inputFields, ::updateBitmap)
-                        QrContentType.SMS -> SmsInputFields(inputFields, ::updateBitmap)
-                        QrContentType.VCARD -> VCardInputFields(inputFields, ::updateBitmap)
-                        QrContentType.EVENT -> EventInputFields(inputFields, ::updateBitmap)
+                        QrContentType.TEXT -> TextInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.URL -> UrlInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.ENCRYPTED -> EncryptedInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.EMAIL -> EmailInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.WIFI -> WifiInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.GEO -> GeoInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.PHONE -> PhoneInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.SMS -> SmsInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.VCARD -> VCardInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.EVENT -> EventInputFields(inputFields, ::onFieldChange, errorFields.value)
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -170,33 +182,42 @@ fun GeneratorScreen(navController: NavHostController) {
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         ) {
                             Button(onClick = {
-                                val content = formatQrContent(selectedContentType, inputFields)
-                                val clipboard =
-                                    context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                                val clip =
-                                    android.content.ClipData.newPlainText("QR Content", content)
-                                clipboard.setPrimaryClip(clip)
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.copied_to_clipboard),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                val rawContent = formatQrContent(selectedContentType, inputFields)
+                                val content = if (encryptEnabled || selectedContentType == QrContentType.ENCRYPTED) CryptoUtils.encrypt(rawContent) else rawContent
+
+                                val shareText: String? = when (selectedContentType) {
+                                    QrContentType.ENCRYPTED,
+                                    QrContentType.WIFI,
+                                    QrContentType.VCARD,
+                                    QrContentType.EVENT -> null
+                                    else -> {
+                                        "${context.getString(R.string.qr_content_label)}\n$content"
+                                    }
+                                }
+
+                                val shareBitmap = QrUtils.generateQrCodeForSharing(content, Color.BLACK)
+
+                                QrUtils.copyQrImageAndTextToClipboard(context, shareText ?: "", shareBitmap)
                             }) {
                                 Text(stringResource(R.string.copy))
                             }
                             Button(onClick = {
-                                val content = formatQrContent(selectedContentType, inputFields)
-                                val shareIntent = android.content.Intent().apply {
-                                    action = android.content.Intent.ACTION_SEND
-                                    putExtra(android.content.Intent.EXTRA_TEXT, content)
-                                    type = "text/plain"
+                                val rawContent = formatQrContent(selectedContentType, inputFields)
+                                val content = if (encryptEnabled || selectedContentType == QrContentType.ENCRYPTED) CryptoUtils.encrypt(rawContent) else rawContent
+
+                                val shareText: String? = when (selectedContentType) {
+                                    QrContentType.ENCRYPTED,
+                                    QrContentType.WIFI,
+                                    QrContentType.VCARD,
+                                    QrContentType.EVENT -> null
+                                    else -> {
+                                        "${context.getString(R.string.qr_content_label)}\n$content"
+                                    }
                                 }
-                                context.startActivity(
-                                    android.content.Intent.createChooser(
-                                        shareIntent,
-                                        null
-                                    )
-                                )
+
+                                val shareBitmap = QrUtils.generateQrCodeForSharing(content, Color.BLACK)
+
+                                QrUtils.shareQrImageWithText(context, shareText ?: "", shareBitmap)
                             }) {
                                 Text(stringResource(R.string.share))
                             }
@@ -208,12 +229,25 @@ fun GeneratorScreen(navController: NavHostController) {
 
         Button(
             onClick = {
-                val content = formatQrContent(selectedContentType, inputFields).let {
-                    if (encryptEnabled && selectedContentType == QrContentType.ENCRYPTED) CryptoUtils.encrypt(
-                        it
-                    ) else it
+                val requiredFields = getRequiredFieldsForType(selectedContentType)
+                val missingFields = requiredFields.filter { inputFields[it].isNullOrBlank() }.toSet()
+
+                errorFields.value = missingFields
+
+                if (missingFields.isNotEmpty()) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.please_fill_required_fields),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@Button
                 }
-                if (content.isBlank() || content.length > MAX_QR_LENGTH) {
+
+                val content = formatQrContent(selectedContentType, inputFields).let {
+                    if (encryptEnabled || selectedContentType == QrContentType.ENCRYPTED) CryptoUtils.encrypt(it) else it
+                }
+
+                if (content.length > MAX_QR_LENGTH) {
                     Toast.makeText(
                         context,
                         context.getString(R.string.the_text_is_too_long),
@@ -221,6 +255,7 @@ fun GeneratorScreen(navController: NavHostController) {
                     ).show()
                     return@Button
                 }
+
                 viewModel.insert(
                     QrEntity(
                         content = content,
@@ -228,11 +263,13 @@ fun GeneratorScreen(navController: NavHostController) {
                         contentType = selectedContentType
                     )
                 )
+
                 Toast.makeText(
                     context,
                     context.getString(R.string.saved_successfully),
                     Toast.LENGTH_SHORT
                 ).show()
+
                 inputFields.clear()
                 qrBitmap = null
             },
@@ -266,7 +303,7 @@ fun tryGenerateQr(
             ).show()
             null
         } else {
-            QrUtils.generateQrCode(finalContent, color)
+            QrUtils.generateQrCodeForPreview(finalContent, color)
         }
     } catch (e: Exception) {
         Toast.makeText(context, context.getString(R.string.the_data_is_too_big), Toast.LENGTH_SHORT)
@@ -315,4 +352,29 @@ fun formatQrContent(contentType: QrContentType, input: Map<String, String>): Str
             END:VEVENT
         """.trimIndent()
     }
+}
+
+fun getRequiredFieldsForType(type: QrContentType): List<String> = when (type) {
+    QrContentType.TEXT,
+    QrContentType.URL,
+    QrContentType.ENCRYPTED -> listOf("text")
+
+    QrContentType.EMAIL -> listOf("email", "subject", "body")
+
+    QrContentType.WIFI -> listOf("ssid", "security", "password")
+
+    QrContentType.GEO -> listOf("lat", "lon")
+
+    QrContentType.PHONE -> listOf("phone")
+
+    QrContentType.SMS -> listOf("phone", "message")
+
+    QrContentType.VCARD -> listOf("firstName", "lastName", "phone")
+
+    QrContentType.EVENT -> listOf("title", "start", "end")
+}
+
+fun isInputValid(type: QrContentType, input: Map<String, String>): Boolean {
+    val requiredFields = getRequiredFieldsForType(type)
+    return requiredFields.all { field -> !input[field].isNullOrBlank() }
 }

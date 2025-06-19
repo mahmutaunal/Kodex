@@ -21,42 +21,46 @@ import androidx.compose.ui.unit.dp
 import com.mahmutalperenunal.kodex.R
 
 @Composable
-fun TextInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun TextInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     OutlinedTextField(
         value = input["text"] ?: "",
-        onValueChange = { input["text"] = it; onChange() },
+        onValueChange = { onChange("text", it) },
         label = { Text(stringResource(R.string.label_text)) },
+        isError = "text" in errorFields,
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
-fun UrlInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun UrlInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     OutlinedTextField(
         value = input["text"] ?: "",
-        onValueChange = { input["text"] = it; onChange() },
+        onValueChange = { onChange("text", it) },
         label = { Text(stringResource(R.string.label_url)) },
+        isError = "text" in errorFields,
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
-fun EncryptedInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun EncryptedInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     OutlinedTextField(
         value = input["text"] ?: "",
-        onValueChange = { input["text"] = it; onChange() },
+        onValueChange = { onChange("text", it) },
         label = { Text(stringResource(R.string.label_encrypted_text)) },
+        isError = "text" in errorFields,
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
-fun EmailInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun EmailInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     Column {
         OutlinedTextField(
             value = input["email"] ?: "",
-            onValueChange = { input["email"] = it; onChange() },
+            onValueChange = { onChange("email", it) },
             label = { Text(stringResource(R.string.label_email_address)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -64,8 +68,9 @@ fun EmailInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["subject"] ?: "",
-            onValueChange = { input["subject"] = it; onChange() },
+            onValueChange = { onChange("subject", it) },
             label = { Text(stringResource(R.string.label_email_subject)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -73,8 +78,9 @@ fun EmailInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["body"] ?: "",
-            onValueChange = { input["body"] = it; onChange() },
+            onValueChange = { onChange("body", it) },
             label = { Text(stringResource(R.string.label_email_body)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -82,15 +88,16 @@ fun EmailInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WifiInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun WifiInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     val securityOptions = listOf("WPA", "WEP", "nopass")
     var expanded by remember { mutableStateOf(false) }
 
     Column {
         OutlinedTextField(
             value = input["ssid"] ?: "",
-            onValueChange = { input["ssid"] = it; onChange() },
+            onValueChange = { onChange("ssid", it) },
             label = { Text(stringResource(R.string.wifi_ssid)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -98,8 +105,9 @@ fun WifiInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["password"] ?: "",
-            onValueChange = { input["password"] = it; onChange() },
+            onValueChange = { onChange("password", it) },
             label = { Text(stringResource(R.string.password)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -125,9 +133,10 @@ fun WifiInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
                     DropdownMenuItem(
                         text = { Text(it) },
                         onClick = {
-                            input["security"] = it
+                            val selected = it
+                            input["security"] = selected
                             expanded = false
-                            onChange()
+                            onChange("security", selected)
                         }
                     )
                 }
@@ -137,12 +146,13 @@ fun WifiInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 }
 
 @Composable
-fun GeoInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun GeoInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     Column {
         OutlinedTextField(
             value = input["lat"] ?: "",
-            onValueChange = { input["lat"] = it; onChange() },
+            onValueChange = { onChange("lat", it) },
             label = { Text(stringResource(R.string.latitude)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -150,30 +160,33 @@ fun GeoInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["lon"] ?: "",
-            onValueChange = { input["lon"] = it; onChange() },
+            onValueChange = { onChange("lon", it) },
             label = { Text(stringResource(R.string.longitude)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
 @Composable
-fun PhoneInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun PhoneInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     OutlinedTextField(
         value = input["phone"] ?: "",
-        onValueChange = { input["phone"] = it; onChange() },
+        onValueChange = { onChange("phone", it) },
         label = { Text(stringResource(R.string.phone_number)) },
+        isError = "text" in errorFields,
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
-fun SmsInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun SmsInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     Column {
         OutlinedTextField(
             value = input["phone"] ?: "",
-            onValueChange = { input["phone"] = it; onChange() },
+            onValueChange = { onChange("phone", it) },
             label = { Text(stringResource(R.string.recipient_phone_number)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -181,20 +194,22 @@ fun SmsInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["message"] ?: "",
-            onValueChange = { input["message"] = it; onChange() },
+            onValueChange = { onChange("message", it) },
             label = { Text(stringResource(R.string.message)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
 @Composable
-fun VCardInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun VCardInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     Column {
         OutlinedTextField(
             value = input["firstName"] ?: "",
-            onValueChange = { input["firstName"] = it; onChange() },
+            onValueChange = { onChange("firstName", it) },
             label = { Text(stringResource(R.string.first_name)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -202,8 +217,9 @@ fun VCardInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["lastName"] ?: "",
-            onValueChange = { input["lastName"] = it; onChange() },
+            onValueChange = { onChange("lastName", it) },
             label = { Text(stringResource(R.string.last_name)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -211,8 +227,9 @@ fun VCardInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["phone"] ?: "",
-            onValueChange = { input["phone"] = it; onChange() },
+            onValueChange = { onChange("phone", it) },
             label = { Text(stringResource(R.string.phone_number)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -220,7 +237,7 @@ fun VCardInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["email"] ?: "",
-            onValueChange = { input["email"] = it; onChange() },
+            onValueChange = { onChange("email", it) },
             label = { Text(stringResource(R.string.email)) },
             modifier = Modifier.fillMaxWidth()
         )
@@ -229,7 +246,7 @@ fun VCardInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["company"] ?: "",
-            onValueChange = { input["company"] = it; onChange() },
+            onValueChange = { onChange("company", it) },
             label = { Text(stringResource(R.string.company)) },
             modifier = Modifier.fillMaxWidth()
         )
@@ -237,12 +254,13 @@ fun VCardInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 }
 
 @Composable
-fun EventInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
+fun EventInputFields(input: MutableMap<String, String>, onChange: (String, String) -> Unit, errorFields: Set<String>) {
     Column {
         OutlinedTextField(
             value = input["title"] ?: "",
-            onValueChange = { input["title"] = it; onChange() },
+            onValueChange = { onChange("title", it) },
             label = { Text(stringResource(R.string.event_title)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -250,8 +268,9 @@ fun EventInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["start"] ?: "",
-            onValueChange = { input["start"] = it; onChange() },
+            onValueChange = { onChange("start", it) },
             label = { Text(stringResource(R.string.start_date_time)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -259,8 +278,9 @@ fun EventInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["end"] ?: "",
-            onValueChange = { input["end"] = it; onChange() },
+            onValueChange = { onChange("end", it) },
             label = { Text(stringResource(R.string.end_date_time)) },
+            isError = "text" in errorFields,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -268,7 +288,7 @@ fun EventInputFields(input: MutableMap<String, String>, onChange: () -> Unit) {
 
         OutlinedTextField(
             value = input["location"] ?: "",
-            onValueChange = { input["location"] = it; onChange() },
+            onValueChange = { onChange("location", it) },
             label = { Text(stringResource(R.string.location)) },
             modifier = Modifier.fillMaxWidth()
         )

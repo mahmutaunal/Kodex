@@ -85,4 +85,9 @@
     <string name="qr_type_vcard">VCard</string>
     <string name="qr_type_event">Etkinlik</string>
     <string name="qr_type_encrypted">Şifreli</string>
+    <string name="qr_content_label">📎 QR İçeriği:</string>
+    <string name="copy_failed">Kopyalama Başarısız</string>
+    <string name="please_fill_required_fields">Lütfen gerekli alanları doldurun</string>
+    <string name="add_to_calendar">Takvime Ekle</string>
+    <string name="unable_to_parse_event">Etkinlik içeriği çözümlenemedi</string>
 </resources>

@@ -85,4 +85,9 @@
     <string name="qr_type_vcard">VCard</string>
     <string name="qr_type_event">Evento</string>
     <string name="qr_type_encrypted">Cifrado</string>
+    <string name="qr_content_label">📎 Contenido del QR:</string>
+    <string name="copy_failed">Error al copiar</string>
+    <string name="please_fill_required_fields">Por favor, completa los campos requeridos</string>
+    <string name="add_to_calendar">Agregar al calendario</string>
+    <string name="unable_to_parse_event">No se pudo analizar el contenido del evento</string>
 </resources>

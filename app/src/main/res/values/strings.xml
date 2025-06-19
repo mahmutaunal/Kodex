@@ -75,7 +75,7 @@
     <string name="label_email_address">Email Address</string>
     <string name="label_email_subject">Subject</string>
     <string name="label_email_body">Body</string>
-    <string name="qr_type_text">Metin</string>
+    <string name="qr_type_text">Text</string>
     <string name="qr_type_url">URL</string>
     <string name="qr_type_email">Email</string>
     <string name="qr_type_phone">Phone</string>
@@ -85,4 +85,9 @@
     <string name="qr_type_vcard">VCard</string>
     <string name="qr_type_event">Event</string>
     <string name="qr_type_encrypted">Encrypted</string>
+    <string name="qr_content_label">📎 QR Content:</string>
+    <string name="copy_failed">Copy Failed</string>
+    <string name="please_fill_required_fields">Please fill in the required fields</string>
+    <string name="add_to_calendar">Add to Calendar</string>
+    <string name="unable_to_parse_event">Unable to parse event content</string>
 </resources>

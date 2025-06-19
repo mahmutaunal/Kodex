@@ -7,7 +7,7 @@ import androidx.compose.ui.res.stringResource
 import com.mahmutalperenunal.kodex.R
 
 enum class ContentType {
-    URL, EMAIL, PHONE, SMS, WIFI, GEO, VCARD, PLAIN
+    URL, EMAIL, PHONE, SMS, WIFI, GEO, VCARD, EVENT, PLAIN
 }
 
 fun detectContentType(content: String): ContentType {
@@ -19,6 +19,7 @@ fun detectContentType(content: String): ContentType {
         content.startsWith("WIFI:") -> ContentType.WIFI
         content.startsWith("geo:") -> ContentType.GEO
         content.startsWith("BEGIN:VCARD") -> ContentType.VCARD
+        content.startsWith("BEGIN:VEVENT") -> ContentType.EVENT
         else -> ContentType.PLAIN
     }
 }

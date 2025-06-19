@@ -85,4 +85,9 @@
     <string name="qr_type_vcard">VCard</string>
     <string name="qr_type_event">Sự kiện</string>
     <string name="qr_type_encrypted">Đã mã hóa</string>
+    <string name="qr_content_label">📎 Nội dung QR:</string>
+    <string name="copy_failed">Sao chép thất bại</string>
+    <string name="please_fill_required_fields">Vui lòng điền vào các trường bắt buộc</string>
+    <string name="add_to_calendar">Thêm vào lịch</string>
+    <string name="unable_to_parse_event">Không thể phân tích nội dung sự kiện</string>
 </resources>
