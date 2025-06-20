@@ -90,4 +90,11 @@
     <string name="please_fill_required_fields">Lütfen gerekli alanları doldurun</string>
     <string name="add_to_calendar">Takvime Ekle</string>
     <string name="unable_to_parse_event">Etkinlik içeriği çözümlenemedi</string>
+    <string name="download">İndir</string>
+    <string name="qr_saved_successfully">QR kod başarıyla kaydedildi</string>
+    <string name="qr_save_failed">QR kod kaydedilirken hata oluştu</string>
+    <string name="name">Name</string>
+    <string name="select_from_map">Haritadan Seç</string>
+    <string name="select_this_location">Bu Konumu Seç</string>
+    <string name="selected_location_title">Seçilen Konum</string>
 </resources>

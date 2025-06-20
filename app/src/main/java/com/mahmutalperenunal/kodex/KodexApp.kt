@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.mahmutalperenunal.kodex.ui.screens.GeneratorScreen
 import com.mahmutalperenunal.kodex.ui.screens.HistoryScreen
@@ -23,6 +24,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mahmutalperenunal.kodex.ui.components.AdMobBanner
+import com.mahmutalperenunal.kodex.ui.screens.MapPickerScreen
+import com.mahmutalperenunal.kodex.viewmodel.SharedLocationViewModel
 
 @Composable
 fun KodexApp() {
@@ -37,42 +40,53 @@ fun KodexApp() {
 
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
+    val bottomBarRoutes = listOf("home", "scanner", "generator", "history")
+    val showBottomBar = currentRoute in bottomBarRoutes
+
+    val sharedLocationViewModel: SharedLocationViewModel = viewModel()
+
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
             bottomBar = {
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    AdMobBanner(
-                        adUnitId = "ca-app-pub-xxxxxxxxxxxxxxxx/zzzzzzzzzz",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                    )
-                    NavigationBar {
-                        bottomNavItems.forEach { item ->
-                            NavigationBarItem(
-                                icon = {
-                                    when (val icon = item.icon) {
-                                        is BottomNavIcon.Vector -> Icon(imageVector = icon.icon, contentDescription = item.label)
-                                        is BottomNavIcon.Drawable -> Icon(
-                                            painter = painterResource(id = icon.resId),
-                                            contentDescription = item.label
-                                        )
-                                    }
-                                },
-                                label = { Text(item.label) },
-                                selected = currentRoute == item.route,
-                                onClick = {
-                                    navController.navigate(item.route) {
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
+                if (showBottomBar) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        AdMobBanner(
+                            adUnitId = "ca-app-pub-xxxxxxxxxxxxxxxx/zzzzzzzzzz",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        )
+                        NavigationBar {
+                            bottomNavItems.forEach { item ->
+                                NavigationBarItem(
+                                    icon = {
+                                        when (val icon = item.icon) {
+                                            is BottomNavIcon.Vector -> Icon(
+                                                imageVector = icon.icon,
+                                                contentDescription = item.label
+                                            )
+
+                                            is BottomNavIcon.Drawable -> Icon(
+                                                painter = painterResource(id = icon.resId),
+                                                contentDescription = item.label
+                                            )
                                         }
-                                        launchSingleTop = true
-                                        restoreState = true
+                                    },
+                                    label = { Text(item.label) },
+                                    selected = currentRoute == item.route,
+                                    onClick = {
+                                        navController.navigate(item.route) {
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                saveState = true
+                                            }
+                                            launchSingleTop = true
+                                            restoreState = true
+                                        }
                                     }
-                                }
-                            )
+                                )
+                            }
                         }
                     }
                 }
@@ -90,6 +104,15 @@ fun KodexApp() {
                     composable("scanner") { ScannerScreen(navController) }
                     composable("generator") { GeneratorScreen(navController) }
                     composable("history") { HistoryScreen(navController) }
+                    composable("map_picker") {
+                        MapPickerScreen(
+                            navController = navController,
+                            onLocationSelected = { lat, lon, address ->
+                                sharedLocationViewModel.setLocation(lat, lon, address)
+                                navController.popBackStack("generator", false)
+                            }
+                        )
+                    }
                 }
             }
         }

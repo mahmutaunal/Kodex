@@ -90,4 +90,11 @@
     <string name="please_fill_required_fields">Veuillez remplir les champs requis</string>
     <string name="add_to_calendar">Ajouter au calendrier</string>
     <string name="unable_to_parse_event">Impossible d’analyser le contenu de l’événement</string>
+    <string name="download">Télécharger</string>
+    <string name="qr_saved_successfully">Le code QR a été enregistré avec succès</string>
+    <string name="qr_save_failed">Une erreur s\'est produite lors de l\'enregistrement du code QR</string>
+    <string name="name">Nom</string>
+    <string name="select_from_map">Sélectionner sur la carte</string>
+    <string name="select_this_location">Sélectionner cet emplacement</string>
+    <string name="selected_location_title">Emplacement sélectionné</string>
 </resources>

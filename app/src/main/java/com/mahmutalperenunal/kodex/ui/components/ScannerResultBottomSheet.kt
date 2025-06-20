@@ -1,11 +1,6 @@
 package com.mahmutalperenunal.kodex.ui.components
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
@@ -20,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mahmutalperenunal.kodex.R
-import com.mahmutalperenunal.kodex.ui.screens.formatQrContent
 import com.mahmutalperenunal.kodex.utils.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,9 +92,7 @@ fun ScannerResultBottomSheet(
                         else -> "${context.getString(R.string.qr_content_label)}\n$content"
                     }
 
-                    val shareBitmap = QrUtils.generateQrCodeForSharing(content, Color.BLACK)
-
-                    QrUtils.copyQrImageAndTextToClipboard(context, shareText ?: "", shareBitmap)
+                    QrUtils.copyToClipboard(context, shareText ?: "")
                 }) {
                     Icon(painterResource(R.drawable.content_copy), contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))

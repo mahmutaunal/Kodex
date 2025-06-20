@@ -73,3 +73,34 @@
 ########################################
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
+
+########################################
+# MapLibre SDK
+########################################
+-keep class org.maplibre.** { *; }
+-dontwarn org.maplibre.**
+
+# Native library yükleme
+-keep class com.mapbox.** { *; }
+-dontwarn com.mapbox.**
+
+# Style JSON parsing
+-keepclassmembers class ** {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# Gson reflection support (eğer MapLibre stil JSON'u parse ederken kullanıyorsa)
+-keep class com.google.gson.stream.** { *; }
+-dontwarn com.google.gson.stream.**
+
+# MapView lifecycle methods
+-keepclassmembers class org.maplibre.android.maps.MapView {
+   public void onCreate(android.os.Bundle);
+   public void onStart();
+   public void onResume();
+   public void onPause();
+   public void onStop();
+   public void onDestroy();
+   public void onLowMemory();
+   public void onSaveInstanceState(android.os.Bundle);
+}

@@ -58,31 +58,11 @@ object QrUtils {
         return bitmap
     }
 
-    fun copyQrImageAndTextToClipboard(context: Context, content: String, bitmap: Bitmap) {
-        try {
-            val file = File(context.cacheDir, "copied_qr_${System.currentTimeMillis()}.png")
-            FileOutputStream(file).use { out ->
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
-            }
-
-            val uri = FileProvider.getUriForFile(
-                context,
-                "${context.packageName}.provider",
-                file
-            )
-
-            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clipData = ClipData.newUri(context.contentResolver, "QR Image", uri).apply {
-                addItem(ClipData.Item(content))
-            }
-            clipboard.setPrimaryClip(clipData)
-
-            Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(context, context.getString(R.string.copy_failed), Toast.LENGTH_SHORT).show()
-        }
+    fun copyToClipboard(context: Context, text: String) {
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText(context.getString(R.string.qr_code), text)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
     }
 
     fun shareQrImageWithText(context: Context, text: String, bitmap: Bitmap) {
@@ -110,6 +90,29 @@ object QrUtils {
 
         } catch (e: Exception) {
             Toast.makeText(context, context.getString(R.string.share_failed), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun saveQrImageToStorage(context: Context, text: String, bitmap: Bitmap) {
+        try {
+            val fileName = "qr_${System.currentTimeMillis()}.png"
+            val picturesDir = File(context.getExternalFilesDir(null), "SavedQRs")
+
+            if (!picturesDir.exists()) {
+                picturesDir.mkdirs()
+            }
+
+            val file = File(picturesDir, fileName)
+            FileOutputStream(file).use { out ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+            }
+
+            val textFile = File(picturesDir, fileName.replace(".png", ".txt"))
+            textFile.writeText(text)
+
+            Toast.makeText(context, context.getString(R.string.qr_saved_successfully), Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(context, context.getString(R.string.qr_save_failed), Toast.LENGTH_SHORT).show()
         }
     }
 }

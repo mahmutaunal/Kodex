@@ -78,7 +78,8 @@ fun HistoryScreen(navController: NavHostController) {
 
                     HistoryItem(
                         qrItem = qrItem,
-                        onCopy = { QrUtils.copyQrImageAndTextToClipboard(context, shareText ?: "", qrBitmap) },
+                        onSave = {QrUtils.saveQrImageToStorage(context, shareText ?: "", qrBitmap) },
+                        onCopy = { QrUtils.copyToClipboard(context, shareText ?: "") },
                         onShare = { QrUtils.shareQrImageWithText(context, shareText ?: "", qrBitmap) },
                         onDelete = { viewModel.delete(qrItem) }
                     )
@@ -92,6 +93,7 @@ fun HistoryScreen(navController: NavHostController) {
 @Composable
 fun HistoryItem(
     qrItem: com.mahmutalperenunal.kodex.data.QrEntity,
+    onSave: () -> Unit,
     onCopy: () -> Unit,
     onShare: () -> Unit,
     onDelete: () -> Unit
@@ -153,6 +155,13 @@ fun HistoryItem(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                IconButton(onClick = onSave) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_download),
+                        contentDescription = stringResource(R.string.download)
+                    )
+                }
+                Spacer(modifier = Modifier.width(24.dp))
                 IconButton(onClick = onCopy) {
                     Icon(
                         painter = painterResource(id = R.drawable.content_copy),

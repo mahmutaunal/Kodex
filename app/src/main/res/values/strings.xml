@@ -90,4 +90,11 @@
     <string name="please_fill_required_fields">Please fill in the required fields</string>
     <string name="add_to_calendar">Add to Calendar</string>
     <string name="unable_to_parse_event">Unable to parse event content</string>
+    <string name="download">Download</string>
+    <string name="qr_saved_successfully">QR code saved successfully</string>
+    <string name="qr_save_failed">An error occurred while saving the QR code</string>
+    <string name="name">Name</string>
+    <string name="select_from_map">Select from Map</string>
+    <string name="select_this_location">Select This Location</string>
+    <string name="selected_location_title">Selected Location</string>
 </resources>

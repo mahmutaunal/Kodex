@@ -31,6 +31,8 @@ import androidx.compose.ui.res.stringResource
 import com.mahmutalperenunal.kodex.R
 import com.mahmutalperenunal.kodex.data.QrContentType
 import com.mahmutalperenunal.kodex.ui.components.*
+import com.mahmutalperenunal.kodex.viewmodel.GeneratorViewModel
+import com.mahmutalperenunal.kodex.viewmodel.SharedLocationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,18 +43,22 @@ fun GeneratorScreen(navController: NavHostController) {
             HistoryViewModel(context.applicationContext as Application)
         }
     )
+    val generatorViewModel: GeneratorViewModel = viewModel()
+    val sharedLocationViewModel: SharedLocationViewModel = viewModel()
+    val latitude by sharedLocationViewModel.latitude.collectAsState()
+    val longitude by sharedLocationViewModel.longitude.collectAsState()
 
     val isDarkTheme = isSystemInDarkTheme()
     val qrColor = if (isDarkTheme) Color.WHITE else Color.BLACK
 
     val MAX_QR_LENGTH = 1000
 
-    var selectedContentType by remember { mutableStateOf(QrContentType.TEXT) }
-    val inputFields = remember { mutableStateMapOf<String, String>() }
-    var qrBitmap by remember { mutableStateOf<Bitmap?>(null) }
-    var encryptEnabled by remember { mutableStateOf(false) }
+    var selectedContentType by generatorViewModel::selectedContentType
+    var qrBitmap by generatorViewModel::qrBitmap
+    var encryptEnabled by generatorViewModel::encryptEnabled
+    val errorFields by generatorViewModel::errorFields
+    val inputFields by generatorViewModel::inputFields
     var expanded by remember { mutableStateOf(false) }
-    val errorFields = remember { mutableStateOf(setOf<String>()) }
 
     fun updateBitmap() {
         if (!isInputValid(selectedContentType, inputFields)) {
@@ -68,6 +74,14 @@ fun GeneratorScreen(navController: NavHostController) {
             errorFields.value -= field
         }
         updateBitmap()
+    }
+
+    LaunchedEffect(latitude, longitude, selectedContentType) {
+        if (selectedContentType == QrContentType.GEO && latitude != null && longitude != null) {
+            inputFields["lat"] = latitude.toString()
+            inputFields["lon"] = longitude.toString()
+            updateBitmap()
+        }
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -131,6 +145,8 @@ fun GeneratorScreen(navController: NavHostController) {
                                     text = { Text(stringResource(id = type.getLabelRes())) },
                                     onClick = {
                                         selectedContentType = type
+                                        generatorViewModel.inputFields.clear()
+                                        generatorViewModel.qrBitmap = null
                                         expanded = false
                                     }
                                 )
@@ -146,11 +162,11 @@ fun GeneratorScreen(navController: NavHostController) {
                         QrContentType.ENCRYPTED -> EncryptedInputFields(inputFields, ::onFieldChange, errorFields.value)
                         QrContentType.EMAIL -> EmailInputFields(inputFields, ::onFieldChange, errorFields.value)
                         QrContentType.WIFI -> WifiInputFields(inputFields, ::onFieldChange, errorFields.value)
-                        QrContentType.GEO -> GeoInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.GEO -> GeoInputFields(navController, inputFields, ::onFieldChange, errorFields.value, sharedLocationViewModel)
                         QrContentType.PHONE -> PhoneInputFields(inputFields, ::onFieldChange, errorFields.value)
                         QrContentType.SMS -> SmsInputFields(inputFields, ::onFieldChange, errorFields.value)
                         QrContentType.VCARD -> VCardInputFields(inputFields, ::onFieldChange, errorFields.value)
-                        QrContentType.EVENT -> EventInputFields(inputFields, ::onFieldChange, errorFields.value)
+                        QrContentType.EVENT -> EventInputFields(navController, inputFields, ::onFieldChange, errorFields.value, sharedLocationViewModel)
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -182,7 +198,7 @@ fun GeneratorScreen(navController: NavHostController) {
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         ) {
                             Button(onClick = {
-                                val rawContent = formatQrContent(selectedContentType, inputFields)
+                                val rawContent = formatQrContent(context, selectedContentType, inputFields)
                                 val content = if (encryptEnabled || selectedContentType == QrContentType.ENCRYPTED) CryptoUtils.encrypt(rawContent) else rawContent
 
                                 val shareText: String? = when (selectedContentType) {
@@ -195,14 +211,12 @@ fun GeneratorScreen(navController: NavHostController) {
                                     }
                                 }
 
-                                val shareBitmap = QrUtils.generateQrCodeForSharing(content, Color.BLACK)
-
-                                QrUtils.copyQrImageAndTextToClipboard(context, shareText ?: "", shareBitmap)
+                                QrUtils.copyToClipboard(context, shareText ?: "")
                             }) {
                                 Text(stringResource(R.string.copy))
                             }
                             Button(onClick = {
-                                val rawContent = formatQrContent(selectedContentType, inputFields)
+                                val rawContent = formatQrContent(context, selectedContentType, inputFields)
                                 val content = if (encryptEnabled || selectedContentType == QrContentType.ENCRYPTED) CryptoUtils.encrypt(rawContent) else rawContent
 
                                 val shareText: String? = when (selectedContentType) {
@@ -243,7 +257,7 @@ fun GeneratorScreen(navController: NavHostController) {
                     return@Button
                 }
 
-                val content = formatQrContent(selectedContentType, inputFields).let {
+                val content = formatQrContent(context, selectedContentType, inputFields).let {
                     if (encryptEnabled || selectedContentType == QrContentType.ENCRYPTED) CryptoUtils.encrypt(it) else it
                 }
 
@@ -290,7 +304,7 @@ fun tryGenerateQr(
     context: Context
 ): Bitmap? {
     val maxLength = 1000
-    val rawContent = formatQrContent(contentType, inputMap)
+    val rawContent = formatQrContent(context, contentType, inputMap)
     val finalContent = if (encrypt && contentType == QrContentType.ENCRYPTED)
         CryptoUtils.encrypt(rawContent) else rawContent
 
@@ -312,45 +326,47 @@ fun tryGenerateQr(
     }
 }
 
-fun formatQrContent(contentType: QrContentType, input: Map<String, String>): String {
+fun formatQrContent(context: Context, contentType: QrContentType, input: Map<String, String>): String {
     return when (contentType) {
-        QrContentType.TEXT, QrContentType.URL, QrContentType.ENCRYPTED ->
-            input["text"] ?: ""
+        QrContentType.TEXT, QrContentType.URL, QrContentType.ENCRYPTED -> input["text"] ?: ""
 
-        QrContentType.EMAIL ->
-            "mailto:${input["email"]}?subject=${input["subject"]}&body=${input["body"]}"
+        QrContentType.EMAIL -> buildString {
+            appendLine("${context.getString(R.string.email)}: ${input["email"]}")
+            appendLine("${context.getString(R.string.label_email_subject)}: ${input["subject"]}")
+            appendLine("${context.getString(R.string.label_email_body)}: ${input["body"]}")
+        }
 
-        QrContentType.WIFI ->
-            "WIFI:S:${input["ssid"]};T:${input["security"]};P:${input["password"]};;"
+        QrContentType.WIFI -> buildString {
+            appendLine("${context.getString(R.string.wifi_ssid)}: ${input["ssid"]}")
+            appendLine("${context.getString(R.string.security_type)}: ${input["security"]}")
+            appendLine("${context.getString(R.string.password)}: ${input["password"]}")
+        }
 
-        QrContentType.GEO ->
-            "geo:${input["lat"]},${input["lon"]}"
+        QrContentType.GEO -> buildString {
+            appendLine("${context.getString(R.string.latitude)}: ${input["lat"]}")
+            appendLine("${context.getString(R.string.longitude)}: ${input["lon"]}")
+        }
 
-        QrContentType.PHONE ->
-            "tel:${input["phone"]}"
+        QrContentType.PHONE -> "${context.getString(R.string.phone_number)}: ${input["phone"]}"
 
-        QrContentType.SMS ->
-            "sms:${input["phone"]}?body=${input["message"]}"
+        QrContentType.SMS -> buildString {
+            appendLine("${context.getString(R.string.phone_number)}: ${input["phone"]}")
+            appendLine("${context.getString(R.string.message)}: ${input["message"]}")
+        }
 
-        QrContentType.VCARD -> """
-            BEGIN:VCARD
-            VERSION:3.0
-            N:${input["lastName"]};${input["firstName"]}
-            FN:${input["firstName"]} ${input["lastName"]}
-            TEL:${input["phone"]}
-            EMAIL:${input["email"]}
-            ORG:${input["company"]}
-            END:VCARD
-        """.trimIndent()
+        QrContentType.VCARD -> buildString {
+            appendLine("${context.getString(R.string.name)}: ${input["firstName"]} ${input["lastName"]}")
+            appendLine("${context.getString(R.string.phone_number)}: ${input["phone"]}")
+            appendLine("${context.getString(R.string.email)}: ${input["email"]}")
+            appendLine("${context.getString(R.string.company)}: ${input["company"]}")
+        }
 
-        QrContentType.EVENT -> """
-            BEGIN:VEVENT
-            SUMMARY:${input["title"]}
-            DTSTART:${input["start"]}
-            DTEND:${input["end"]}
-            LOCATION:${input["location"]}
-            END:VEVENT
-        """.trimIndent()
+        QrContentType.EVENT -> buildString {
+            appendLine("${context.getString(R.string.event_title)}: ${input["title"]}")
+            appendLine("${context.getString(R.string.start_date_time)}: ${input["start"]}")
+            appendLine("${context.getString(R.string.end_date_time)}: ${input["end"]}")
+            appendLine("${context.getString(R.string.location)}: ${input["location"]}")
+        }
     }
 }
 
@@ -371,7 +387,7 @@ fun getRequiredFieldsForType(type: QrContentType): List<String> = when (type) {
 
     QrContentType.VCARD -> listOf("firstName", "lastName", "phone")
 
-    QrContentType.EVENT -> listOf("title", "start", "end")
+    QrContentType.EVENT -> listOf("title", "start")
 }
 
 fun isInputValid(type: QrContentType, input: Map<String, String>): Boolean {
